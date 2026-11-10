@@ -301,7 +301,7 @@ window.AMP_KEY='';
   const ORDER=['run','ride','hike','pet'];
   const INSTALL_URL='https://www.theres.co'; // Airbridge 트래킹 링크로 교체
   const CREW=(function(){try{return(new URLSearchParams(location.search).get('c')||'direct').replace(/[^a-zA-Z0-9_-]/g,'').slice(0,30)||'direct';}catch(e){return'direct';}})();
-  const COUPON={code:'COUPON',desc:'데얼스아웃도어에서 쓸 수 있는 할인 쿠폰이에요. 주문서에서 쿠폰 코드를 입력해 주세요.',url:'https://www.theresoutdoor.co'}; // 카페24 쿠폰 확정되면 교체
+  const COUPON={on:false,code:'COUPON',desc:'데얼스아웃도어에서 쓸 수 있는 할인 쿠폰이에요. 주문서에서 쿠폰 코드를 입력해 주세요.',url:'https://www.theresoutdoor.co'}; // 카페24 쿠폰 확정되면 교체
   const GEL={price:11000}; // 아미노바이탈 아미노샷 퍼펙트 에너지젤 45g 4개, 1P = 1원
   let sport='run', chipWeekly=20, worker=null, sel=0, friend=null;
   const kmBy={}, paceBy={};
@@ -391,7 +391,7 @@ window.AMP_KEY='';
     try{if(navigator.share){await navigator.share({title:'숨은 리워드 찾기',text,url});track('share_done');showCoupon();return;}}catch(e){if(e&&e.name==='AbortError')return;}
     try{await navigator.clipboard.writeText(text+' '+url);toast('링크를 복사했어요. 카톡에 붙여넣어 보내주세요.');track('share_copied');showCoupon();}
     catch(e){toast('아래 문구를 길게 눌러 복사해 주세요.');const b=document.createElement('textarea');b.className='copybox';b.readOnly=true;b.value=text+' '+url;$('s2').appendChild(b);b.select();}}
-  function showCoupon(){const c=$('coupon');if(!c.hidden)return;$('cpCode').textContent=COUPON.code;$('cpDesc').textContent=COUPON.desc;$('cpGo').href=COUPON.url;c.hidden=false;c.scrollIntoView({behavior:'smooth',block:'center'});track('coupon_revealed');}
+  function showCoupon(){if(!COUPON.on)return;const c=$('coupon');if(!c.hidden)return;$('cpCode').textContent=COUPON.code;$('cpDesc').textContent=COUPON.desc;$('cpGo').href=COUPON.url;c.hidden=false;c.scrollIntoView({behavior:'smooth',block:'center'});track('coupon_revealed');}
   $('cpCopy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(COUPON.code);toast('쿠폰 코드를 복사했어요.');}catch(e){toast('코드를 길게 눌러 복사해 주세요.');}track('coupon_copied');});
   $('cpGo').addEventListener('click',()=>track('coupon_shop_clicked'));
   ['prod1','prod2'].forEach(id=>$(id).addEventListener('click',()=>track('product_clicked',{from:id})));
