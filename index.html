@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta property="og:title" content="숨은 리워드 찾기 · 데얼스"><meta property="og:description" content="내 운동 기록에 숨은 리워드, 얼마일까요? 데얼스 아웃도어 리워드 커머스">
+</head><body>
+<title>숨은 리워드 찾기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/*
+  v6 (11/6): 모바일 한 화면 최적화 · 입력 즉시 숫자/상품이 실시간으로 보이는 후킹 · 트래킹 로그 같은 주황 실선 디테일
+  레퍼런스: 삼쩜삼(금액 먼저), 토스(한 화면 한 메시지, 실시간 반응), Share Aura·Strava(경로 라인)
+  컬러 데얼스 #FF5500 / 폰트 Helvetica + Apple SD Gothic Neo / 간격 4·8·12·16·24 / CTA 56px
+*/
+:root{
+  color-scheme:dark;
+  --sun:#FF5500; --sun-press:#FF6E33; --sun-dim:rgba(255,85,0,.16);
+  --bg:#000; --s:#141414; --s2:#222; --line:#2A2A2A;
+  --t:#FFF; --t2:#BEBEBE; --t3:#767676;
+  --font:"Helvetica Neue",Helvetica,"Apple SD Gothic Neo","Noto Sans KR",Roboto,sans-serif;
+  --gut:clamp(16px,5vw,20px);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{background:var(--bg)}
+body{margin:0;color:var(--t);font-family:var(--font);font-size:15px;line-height:1.5;word-break:keep-all;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;padding-inline:var(--gut);padding-block:0 calc(120px + env(safe-area-inset-bottom,0px))}
+body.r2{padding-bottom:calc(160px + env(safe-area-inset-bottom,0px))}
+.app{max-width:440px;margin:0 auto}
+.bar{height:56px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:6px;font:700 18px var(--font);letter-spacing:-.02em;background:none;border:0;color:var(--t);padding:0;cursor:pointer;min-height:44px}
+.logo img{height:24px;width:auto;display:block}
+.tagline{font:500 11px var(--font);color:var(--t2);border:1px solid var(--line);border-radius:99px;padding:5px 10px}
+/* 히어로 A안 — 시안(hero_3options A)과 동일 수치 */
+.heroA{position:relative;padding-top:150px}
+.heroA .trackA{position:absolute;top:0;left:calc(-1*var(--gut));width:calc(100% + 2*var(--gut));height:140px;pointer-events:none}
+.routeA{fill:none;stroke:var(--sun);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(255,85,0,.55));stroke-dasharray:900;stroke-dashoffset:900;animation:drawA 2.4s ease-out forwards}
+.heroA.again .routeA{animation:none}
+@keyframes drawA{to{stroke-dashoffset:0}}
+.headA{fill:var(--sun)}
+.heroA .eyebrow{font:600 13px var(--font);color:#FF8A4D;margin:0 0 10px}
+.heroA .h{font:700 26px/1.32 var(--font);letter-spacing:-.03em;margin:0 0 14px}
+.heroA .h em{font-style:normal;color:var(--sun)}
+.heroA .num{font:700 min(58px,15vw)/1 var(--font);letter-spacing:-.045em;font-variant-numeric:tabular-nums;margin:0 0 10px;white-space:nowrap}
+.heroA .num .p{color:var(--sun)}
+.heroA .bl{display:inline-block;filter:blur(9px);opacity:.9;transition:filter .45s ease,opacity .45s ease;user-select:none}
+.heroA .bl.on{filter:none;opacity:1}
+.heroA .sub{font:400 13.5px/1.55 var(--font);color:var(--t2);margin:0}
+.heroA .proof{display:flex;gap:6px;flex-wrap:wrap;margin-top:16px}
+.pillA{background:rgba(255,85,0,.14);color:#FF8A4D;border-radius:99px;padding:5px 10px;font:600 12px var(--font)}
+#s1{gap:0}
+.heroA{display:flex;flex-direction:column;min-height:min(calc(100svh - 56px),720px);padding-bottom:28px;margin-bottom:0}
+.heroA .friend{margin:0 0 14px}
+.heroCta{margin-top:auto;padding-top:36px}
+.heroCta .micro{text-align:center;font:400 12px var(--font);color:var(--t3);margin:10px 0 0}
+.sec{display:flex;flex-direction:column;gap:14px;padding:56px 0 8px;border-top:1px solid var(--line)}
+.sec .no{font:600 13px var(--font);color:#FF8A4D;margin:0}
+.sec h2{font:700 22px/1.36 var(--font);letter-spacing:-.03em;margin:0}
+.sec .lead{font:400 13.5px/1.55 var(--font);color:var(--t2);margin:-4px 0 6px}
+.cap.big{min-height:84px;border-radius:18px;border:1.5px dashed rgba(255,85,0,.55);background:rgba(255,85,0,.06)}
+.cap.big b{font-weight:700;font-size:15px}
+.or{display:flex;align-items:center;gap:10px;font:500 12px var(--font);color:var(--t3);margin:6px 0 2px}
+.or:before,.or:after{content:"";flex:1;height:1px;background:var(--line)}
+.dock{transition:transform .3s ease,opacity .3s ease}
+body.hideDock .dock{transform:translateY(110%);opacity:0;pointer-events:none}
+.dock .micro{text-align:center;font:400 12px var(--font);color:var(--t3);margin:2px 0 0}
+.screen{display:flex;flex-direction:column;gap:clamp(14px,2.4vh,22px);padding-top:8px}
+
+.hero{position:relative;overflow:hidden;border-radius:24px;background:linear-gradient(160deg,#1A1A1A 0%,#0C0C0C 100%);padding:clamp(18px,3vh,24px) 20px 20px;min-height:clamp(210px,30vh,270px);display:flex;flex-direction:column;justify-content:flex-end;gap:6px;isolation:isolate}
+.hero svg.track{position:absolute;inset:0;width:100%;height:100%;z-index:-1}
+.track .grid{stroke:#1E1E1E;stroke-width:1}
+.track .route{fill:none;stroke:var(--sun);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(255,85,0,.55))}
+.track .ghost{fill:none;stroke:rgba(255,85,0,.18);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:2 6}
+.track .start{fill:#000;stroke:var(--sun);stroke-width:2.5}
+.track .head{fill:var(--sun)}
+.track .pulse{fill:none;stroke:var(--sun);stroke-width:2;opacity:.6;transform-box:fill-box;transform-origin:center;animation:pl 1.6s ease-out infinite}
+@keyframes pl{from{transform:scale(.6);opacity:.8}to{transform:scale(1.8);opacity:0}}
+.hero .kick{font:500 14px/20px var(--font);color:var(--t2)}
+.hero .num{font:700 clamp(46px,15vw,64px)/1 var(--font);letter-spacing:-.045em;font-variant-numeric:tabular-nums;text-shadow:0 2px 16px rgba(0,0,0,.7)}
+.hero .num span{color:var(--sun)}
+.hero .meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:5px;background:rgba(255,85,0,.14);color:#FF8A4D;border-radius:99px;padding:5px 10px;font:600 12px var(--font)}
+.pill b{color:#fff}
+.ex{display:inline-block;font:700 11px/1 var(--font);color:#000;background:#FFD2BA;border-radius:6px;padding:4px 6px;margin-right:6px;vertical-align:1px}
+.prod .exn{color:var(--t3);font-weight:500;font-size:12px}
+
+.prod{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--t);background:var(--s);border-radius:20px;padding:14px 16px;border:1px solid var(--line)}
+.prod .pack{position:relative;width:52px;height:52px;flex:none;border-radius:14px;background:var(--sun-dim);display:grid;place-items:center}
+.prod .pack .cnt{position:absolute;top:-6px;right:-6px;min-width:24px;height:24px;padding:0 6px;border-radius:12px;background:var(--sun);color:#fff;font:700 13px/24px var(--font);text-align:center;font-variant-numeric:tabular-nums}
+.prod .d{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.prod .d b{font:700 16px/22px var(--font)}
+.prod .d b em{font-style:normal;color:var(--sun)}
+.prod .d small{font:400 12px/17px var(--font);color:var(--t3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prod .arr{color:var(--t3);font-size:18px}
+.pouches{display:flex;gap:4px;flex-wrap:wrap;align-items:center;margin-top:4px}
+.pouches svg{width:13px;height:17px}
+
+.sports{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.sports button{min-height:52px;border-radius:14px;border:1px solid var(--line);background:var(--s);color:var(--t2);font:500 14px var(--font);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:0}
+.sports button small{font:500 11px var(--font);color:var(--t3)}
+.sports button small.has{color:#FF8A4D}
+.sports button[aria-pressed="true"]{border-color:var(--sun);color:var(--t);font-weight:700;background:#1C1C1C}
+.kmrow{display:flex;flex-direction:column;gap:8px}
+.kmbox{display:flex;align-items:baseline;gap:8px;background:var(--s);border-radius:16px;padding:14px 18px;border:2px solid var(--line)}
+.kmbox:focus-within{border-color:var(--sun)}
+.kmbox input{flex:1;min-width:0;background:none;border:0;outline:none;color:var(--t);font:700 30px/1.15 var(--font);letter-spacing:-.03em;font-variant-numeric:tabular-nums;padding:0}
+.kmbox input::placeholder{color:#444;font-size:20px;font-weight:500;letter-spacing:0}
+.kmbox span{font:700 18px var(--font);color:var(--t2)}
+.kmbox{align-items:center}
+.kmbox .clr{flex:none;width:28px;height:28px;margin-right:-6px;border-radius:50%;border:0;background:#2E2E2E;color:var(--t2);font:500 18px/28px var(--font);padding:0;cursor:pointer}
+.kmbox .clr:active{background:#3A3A3A}
+.chips{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.chips button{min-height:40px;border-radius:12px;border:1px solid var(--line);background:none;color:var(--t2);font:500 13.5px var(--font);cursor:pointer;padding:0}
+.chips button:active{border-color:var(--sun);color:var(--t)}
+.chips button.hit{animation:hit .35s ease-out}
+@keyframes hit{0%{border-color:var(--sun);color:var(--sun);transform:scale(.96)}100%{transform:scale(1)}}
+.cap{position:relative;display:flex;align-items:center;gap:12px;min-height:52px;padding:0 16px;border-radius:14px;border:1px dashed #3A3A3A;cursor:pointer}
+.cap svg{flex:none}
+.cap .tx{flex:1;min-width:0}
+.cap b{display:block;font:500 14px/20px var(--font)}
+.cap span.s{display:block;font:400 12px/17px var(--font);color:var(--t3)}
+.cap input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.status{font:400 12.5px/18px var(--font);color:var(--t3);margin:0;min-height:18px}
+.status.err{color:var(--sun-press)}
+.txtbtn{min-height:44px;padding:0;border:0;background:none;color:var(--t3);font:400 12.5px var(--font);text-decoration:underline;text-underline-offset:3px;cursor:pointer;white-space:nowrap}
+.friend{display:flex;align-items:center;gap:12px;background:var(--s);border:1px solid var(--line);border-radius:16px;padding:12px 16px;font:400 14px/20px var(--font)}
+.friend b{color:var(--sun)}
+.friend .ic{width:32px;height:32px;border-radius:50%;background:var(--s2);display:grid;place-items:center;font:700 12px var(--font);flex:none}
+
+.rows{display:flex;flex-direction:column;background:var(--s);border-radius:20px;padding:2px 18px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:15px 0}
+.row+.row{border-top:1px solid var(--line)}
+.row[hidden]+.row{border-top:0}
+.row .l{min-width:0}
+.row .l b{display:block;font:500 15px/21px var(--font)}
+.row .l small{display:block;font:400 12px/17px var(--font);color:var(--t3);font-variant-numeric:tabular-nums}
+.row .v{font:700 22px/1 var(--font);letter-spacing:-.02em;white-space:nowrap;font-variant-numeric:tabular-nums}
+.row .v.sm{font-size:17px;color:var(--t2)}
+.row .v.hot{color:var(--sun)}
+.row .v.up{color:#00FF6E}
+.wk{display:flex;gap:6px;padding:0 0 14px}
+.wk button{min-height:36px;padding:0 10px;border-radius:99px;border:1px solid var(--line);background:none;color:var(--t2);font:500 12.5px var(--font);cursor:pointer}
+.wk button[aria-pressed="true"]{border-color:var(--sun);color:var(--t)}
+.fine{margin:0;font:400 12px/18px var(--font);color:var(--t3)}
+.fine b{color:var(--t2);font-weight:500}
+.coupon{display:flex;flex-direction:column;gap:10px;background:var(--s);border:1px dashed var(--sun);border-radius:20px;padding:18px}
+.coupon .k{font:500 13px var(--font);color:var(--sun)}
+.coupon .code{font:700 26px var(--font);letter-spacing:.04em}
+.coupon .d{font:400 13px/19px var(--font);color:var(--t2)}
+.coupon .acts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.coupon .acts>*{display:flex;align-items:center;justify-content:center;min-height:44px;border-radius:12px;font:600 14px var(--font);text-decoration:none;border:0;cursor:pointer}
+.coupon .cp{background:var(--s2);color:var(--t)}
+.coupon .go{background:var(--sun);color:#fff}
+.copybox{width:100%;background:var(--s);border:1px solid var(--line);border-radius:12px;color:var(--t2);font:400 13px var(--font);padding:12px}
+
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:5;padding:12px var(--gut) calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,#000 80%,rgba(0,0,0,0))}
+.dock .in{max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:8px}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;height:56px;border-radius:16px;border:0;font:700 17px var(--font);text-decoration:none;cursor:pointer;width:100%}
+.btn.pri{background:var(--sun);color:#fff}
+.btn.pri:active{background:var(--sun-press)}
+.btn.pri .live{font-variant-numeric:tabular-nums;font-weight:500;opacity:.85}
+.btn.weak{background:var(--s2);color:var(--t);font-size:15px;height:48px}
+button:focus-visible,a:focus-visible,.cap:focus-within{outline:2px solid var(--sun);outline-offset:2px}
+
+.sheet{position:fixed;inset:0;z-index:30;background:#000;overflow:auto;padding:16px var(--gut) calc(24px + env(safe-area-inset-bottom,0px))}
+.sheet .in{max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+.sheet .top{display:flex;justify-content:space-between;align-items:center}
+.sheet h2{margin:0;font:700 17px var(--font)}
+.close{min-width:44px;min-height:44px;border:0;background:none;color:var(--t2);font:500 15px var(--font);cursor:pointer}
+.pv{display:flex;justify-content:center}
+.pv img{width:min(58%,240px);aspect-ratio:9/16;border-radius:16px;border:1px solid var(--line);object-fit:cover;background:var(--s)}
+.pv img.check,.thumb.check{background:repeating-conic-gradient(#262626 0 25%,#181818 0 50%) 0 0/16px 16px}
+.picker{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.pick{display:flex;flex-direction:column;align-items:center;gap:6px;border:0;background:none;color:var(--t2);font:500 12.5px var(--font);padding:0;cursor:pointer}
+.thumb{width:100%;aspect-ratio:9/16;border-radius:10px;overflow:hidden;border:2px solid transparent;background:var(--s)}
+.thumb img{width:100%;height:100%;display:block;object-fit:cover}
+.pick[aria-pressed="true"]{color:var(--t);font-weight:700}
+.pick[aria-pressed="true"] .thumb{border-color:var(--sun)}
+.hint{margin:0;text-align:center;font:400 14px/21px var(--font);color:var(--t2)}
+.toast{position:fixed;left:50%;bottom:calc(140px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--s2);color:var(--t);font:500 14px var(--font);padding:12px 18px;border-radius:12px;z-index:40;max-width:calc(100% - 40px);text-align:center}
+@media (max-height:700px){.hero{min-height:180px}.hero .num{font-size:clamp(40px,13vw,52px)}.kmbox input{font-size:26px}.sports button{min-height:46px}}
+@media (prefers-reduced-motion:reduce){.track .pulse{animation:none}}
+</style>
+
+<div class="app">
+  <div class="bar">
+    <button type="button" class="logo" id="home" aria-label="데얼스 처음으로"><img src="data:image/png;base64,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" alt="Theres" width="59" height="24"></button>
+    <span class="tagline">아웃도어 리워드 커머스</span>
+  </div>
+
+  <section class="screen" id="s1">
+    <div class="heroA">
+      <svg class="trackA" id="track1" viewBox="0 0 340 140" preserveAspectRatio="none" aria-hidden="true"><path class="routeA" d="M18 118 C60 112 70 80 110 86 S160 122 190 98 S220 48 260 56 S300 34 322 22"/><circle class="headA" cx="322" cy="22" r="5"/></svg>
+            <div class="friend" id="friend" hidden>
+      <div class="ic" aria-hidden="true">VS</div>
+      <div>친구는 지금까지 <b id="fP">0P</b>를 놓쳤어요. 내 기록은?</div>
+    </div>
+      <p class="eyebrow" id="kick1">스트라바 기록으로 확인</p>
+      <p class="h" id="hl1">내 운동 기록에 숨은<br>리워드, <em>얼마일까요?</em></p>
+      <div class="num" id="liveP" aria-live="polite"><span class="bl" id="liveN">00,000</span><span class="p">P</span></div>
+      <p class="sub">달린 만큼 1km당 최대 40P · 1P = 1원</p>
+      <div class="proof"><span class="pillA">러닝·등산·펫워킹 40P/km</span><span class="pillA">사이클 10P/km</span></div>
+      <div class="heroCta" id="heroCta"><button type="button" class="btn pri" id="toInput">내 리워드 확인하기</button><p class="micro">캡처 1장 또는 km 입력 · 로그인 없음</p></div>
+    </div>
+    <div class="sec" id="sec1">
+      <p class="no">01 · 기록 불러오기</p>
+      <h2>스트라바 캡처 1장이면<br>자동으로 계산돼요</h2>
+      <p class="lead">스트라바 앱 You → 통계 화면을 캡처해 올려주세요. 여러 종목을 한 번에 올려도 돼요.</p>
+      <label class="cap big" for="file">
+      <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="4" width="16" height="13" rx="3" fill="none" stroke="#BEBEBE" stroke-width="1.6"/><circle cx="10" cy="10.5" r="3" fill="none" stroke="#BEBEBE" stroke-width="1.6"/><path d="M7 4l1.2-2h3.6L13 4" fill="none" stroke="#BEBEBE" stroke-width="1.6"/></svg>
+      <span class="tx"><b>스트라바 캡처 올리기</b><span class="s">You → 통계 화면. 여러 종목 한 번에 가능</span></span>
+      <input type="file" id="file" accept="image/*" multiple>
+    </label>
+      <div class="or"><span>또는 직접 입력</span></div>
+    <div class="sports" role="group" aria-label="종목">
+      <button type="button" data-sport="run" aria-pressed="true">러닝<small>40P</small></button>
+      <button type="button" data-sport="ride" aria-pressed="false">사이클링<small>10P</small></button>
+      <button type="button" data-sport="hike" aria-pressed="false">등산<small>40P</small></button>
+      <button type="button" data-sport="pet" aria-pressed="false">펫워킹<small>40P</small></button>
+    </div>
+    <div class="kmrow">
+      <label class="kmbox" for="km"><input id="km" inputmode="decimal" placeholder="지금까지 달린 거리" autocomplete="off" aria-label="지금까지 달린 거리"><span>km</span><button type="button" class="clr" id="clr" aria-label="입력한 거리 지우기" hidden>×</button></label>
+      <div class="chips" id="presets" role="group" aria-label="빠른 입력">
+        <button type="button" data-km="100" aria-label="100km 더하기">+100</button>
+        <button type="button" data-km="500" aria-label="500km 더하기">+500</button>
+        <button type="button" data-km="1000" aria-label="1,000km 더하기">+1,000</button>
+        <button type="button" data-km="3000" aria-label="3,000km 더하기">+3,000</button>
+      </div>
+    </div>
+    <div class="foot"><p class="status" id="status" aria-live="polite">종목을 바꿔 각각 입력하면 합산돼요.</p></div>
+    </div>
+    <div class="sec" id="sec2">
+      <p class="no">02 · 리워드로 바꾸면</p>
+      <h2>숨은 리워드로<br>이만큼 살 수 있어요</h2>
+      <p class="lead">데얼스아웃도어에서 1P = 1원으로 바로 쓸 수 있어요.</p>
+    <a class="prod" id="prod1" href="https://www.theresoutdoor.co/product/detail.html?product_no=6480" target="_blank" rel="noopener">
+      <span class="pack"><svg width="26" height="34" viewBox="0 0 26 34" aria-hidden="true"><path d="M6 2h14l-1.5 4H7.5z" fill="#FF5500"/><rect x="3" y="6" width="20" height="26" rx="5" fill="none" stroke="#FF5500" stroke-width="2.4"/><path d="M8 18h10M8 23h7" stroke="#FF5500" stroke-width="2.4" stroke-linecap="round"/></svg><span class="cnt" id="cnt1">0</span></span>
+      <span class="d"><b id="prodT">에너지젤 <em id="set1">몇 세트</em>일까요?</b><small>아미노바이탈 퍼펙트 에너지젤 45g 4개 · 11,000원</small></span>
+      <span class="arr" aria-hidden="true">›</span>
+    </a>
+    </div>
+  </section>
+
+  <section class="screen" id="s2" hidden>
+    <div class="hero">
+      <svg class="track" id="track2" aria-hidden="true"></svg>
+      <span class="kick" id="rLabel">지금까지 놓친 리워드</span>
+      <span class="num" id="rMiss">0<span>P</span></span>
+      <span class="meta" id="rMeta"></span>
+    </div>
+    <a class="prod" id="prod2" href="https://www.theresoutdoor.co/product/detail.html?product_no=6480" target="_blank" rel="noopener">
+      <span class="pack"><svg width="26" height="34" viewBox="0 0 26 34" aria-hidden="true"><path d="M6 2h14l-1.5 4H7.5z" fill="#FF5500"/><rect x="3" y="6" width="20" height="26" rx="5" fill="none" stroke="#FF5500" stroke-width="2.4"/><path d="M8 18h10M8 23h7" stroke="#FF5500" stroke-width="2.4" stroke-linecap="round"/></svg><span class="cnt" id="cnt2">0</span></span>
+      <span class="d"><b>에너지젤 <em id="set2">0세트</em>를 놓쳤어요</b><small id="gelSub">아미노바이탈 퍼펙트 에너지젤 45g 4개 · 11,000원</small><span class="pouches" id="pouches" aria-hidden="true"></span></span>
+      <span class="arr" aria-hidden="true">›</span>
+    </a>
+    <div class="rows" id="breakdown"></div>
+    <div class="rows">
+      <div class="row" id="vsRow" hidden><div class="l"><b>친구와 비교</b><small id="vsSub">친구 0P</small></div><div class="v up" id="vsV">+0P</div></div>
+      <div class="row"><div class="l"><b>지금부터 데얼스에서 1년이면</b><small id="yearSub"></small></div><div class="v hot" id="rYear">0P</div></div>
+      <div class="wk" role="group" aria-label="주간 거리" id="wk">
+        <button type="button" data-wk="10">주 10km</button>
+        <button type="button" data-wk="20" aria-pressed="true">주 20km</button>
+        <button type="button" data-wk="50">주 50km</button>
+      </div>
+    </div>
+    <div class="coupon" id="coupon" hidden>
+      <span class="k">공유 감사 쿠폰</span>
+      <span class="code" id="cpCode">COUPON</span>
+      <span class="d" id="cpDesc"></span>
+      <div class="acts"><button type="button" class="cp" id="cpCopy">코드 복사</button><a class="go" id="cpGo" href="https://www.theresoutdoor.co" target="_blank" rel="noopener">쇼핑하러 가기</a></div>
+    </div>
+    <p class="fine"><b>데얼스는 운동 기록이 리워드가 되는 아웃도어 리워드 커머스예요.</b> 앱에서 기록하면 1km마다 리워드가 쌓이고, 150개 아웃도어 브랜드 상품을 살 때 쓸 수 있어요. 위 금액은 현재 요율 기준 시뮬레이션(1P = 1원)이며 과거 기록은 소급 지급되지 않아요.</p>
+  </section>
+</div>
+
+<div class="dock"><div class="in" id="dock"></div></div>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="in">
+    <div class="top"><h2>결과 카드</h2><button type="button" class="close" id="closeSheet">닫기</button></div>
+    <div class="pv"><img id="pvImg" alt="선택한 카드"></div>
+    <div class="picker" id="picker" role="group" aria-label="카드 템플릿"></div>
+    <p class="hint">이미지를 길게 눌러 저장한 뒤 스토리에 올려주세요.</p>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+/* Amplitude (Theres Inc. 404638) — 키만 넣으면 동작. 로드 전 이벤트는 큐에 쌓았다가 보냄 */
+window.AMP_KEY='';
+(function(){window._o33q=[];if(!window.AMP_KEY)return;var s=document.createElement('script');s.src='https://cdn.amplitude.com/script/'+window.AMP_KEY+'.js';s.async=true;
+  s.onload=function(){try{window.amplitude.init(window.AMP_KEY,{fetchRemoteConfig:true,autocapture:{attribution:true,pageViews:true,sessions:true,formInteractions:false,fileDownloads:false,elementInteractions:false}});
+    (window._o33q||[]).forEach(function(e){window.amplitude.track(e[0],e[1]);});window._o33q=null;}catch(e){}};document.head.appendChild(s);})();
+</script>
+<script>
+(function(){
+  const RATE={run:40,hike:40,pet:40,ride:10};
+  const KO={run:'러닝',hike:'등산',pet:'펫워킹',ride:'사이클링'};
+  const VERB={run:'달린',hike:'걸은',pet:'산책한',ride:'달린'};
+  const ORDER=['run','ride','hike','pet'];
+  const INSTALL_URL='https://www.theres.co'; // Airbridge 트래킹 링크로 교체
+  const CREW=(function(){try{return(new URLSearchParams(location.search).get('c')||'direct').replace(/[^a-zA-Z0-9_-]/g,'').slice(0,30)||'direct';}catch(e){return'direct';}})();
+  const COUPON={code:'COUPON',desc:'데얼스아웃도어에서 쓸 수 있는 할인 쿠폰이에요. 주문서에서 쿠폰 코드를 입력해 주세요.',url:'https://www.theresoutdoor.co'}; // 카페24 쿠폰 확정되면 교체
+  const GEL={price:11000}; // 아미노바이탈 아미노샷 퍼펙트 에너지젤 45g 4개, 1P = 1원
+  let sport='run', chipWeekly=20, worker=null, sel=0, friend=null;
+  const kmBy={}, paceBy={};
+  const $=id=>document.getElementById(id);
+  const fmt=n=>Math.round(n).toLocaleString('ko-KR');
+  const fmt1=n=>(Math.round(n*10)/10).toLocaleString('ko-KR');
+  const num=s=>{const v=parseFloat(String(s).replace(/,/g,''));return isFinite(v)&&v>=0?v:0;};
+  const reduce=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
+  function track(n,p){try{const props=Object.assign({crew:CREW,friend:!!friend},p||{});if(window.amplitude&&!window._o33q)window.amplitude.track('o33_'+n,props);else if(window._o33q)window._o33q.push(['o33_'+n,props]);}catch(e){}}
+  function toast(m){const t=$('toast');t.textContent=m;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>t.hidden=true,2400);}
+  function weeksThisYear(){const n=new Date(),j=new Date(n.getFullYear(),0,1);return Math.max(1,(n-j)/864e5/7);}
+  try{const q=new URLSearchParams(location.search);const p=num(q.get('p'));if(p>0){friend={p};$('fP').textContent=fmt(p)+'P';$('friend').hidden=false;track('friend_link_opened',friend);}}catch(e){}
+
+  // ---------- 트래킹 로그 라인 ----------
+  function routePts(w,h,seed,n,band){band=band||1;const top=h*.08,bot=h*Math.min(.85,band);let s=seed;const rnd=()=>{s=(s*9301+49297)%233280;return s/233280;};
+    const y0=band<1?bot:h*.8;const pts=[[w*.07,y0]];let x=w*.07,y=y0,a=-0.4;
+    for(let i=0;i<n;i++){a+=(rnd()-.5)*.95;a=Math.max(-1.2,Math.min(.55,a));const st=w/n*1.08;x+=Math.cos(a)*st;y+=Math.sin(a)*st*1.5;
+      y=Math.max(top,Math.min(bot,y));if(x>w*.95)break;pts.push([x,y]);}
+    return pts;}
+  function drawTrack(id,p,seed){if(id==='track1')return;const svg=$(id);const r=svg.getBoundingClientRect();const w=Math.max(280,r.width),h=Math.max(170,r.height);
+    svg.setAttribute('viewBox','0 0 '+w+' '+h);const pts=routePts(w,h,seed,22,id==='track1'?.2:.42);
+    const d=pts.map((q,i)=>(i?'L':'M')+q[0].toFixed(1)+' '+q[1].toFixed(1)).join(' ');
+    let g='';for(let x=28;x<w;x+=28)g+='<line class="grid" x1="'+x+'" y1="0" x2="'+x+'" y2="'+h+'"/>';for(let y=28;y<h;y+=28)g+='<line class="grid" x1="0" y1="'+y+'" x2="'+w+'" y2="'+y+'"/>';
+    svg.innerHTML=g+'<path class="ghost" d="'+d+'"/><path class="route" d="'+d+'"/><circle class="start" cx="'+pts[0][0]+'" cy="'+pts[0][1]+'" r="5"/><circle class="pulse" r="9"/><circle class="head" r="5"/>';
+    svg._ok=true;setProgress(id,p,false);}
+  function setProgress(id,p,anim){const svg=$(id);if(!svg._ok)return;const rt=svg.querySelector('.route');const L=rt.getTotalLength();
+    p=Math.max(0.03,Math.min(1,p));rt.style.strokeDasharray=L;const target=L*(1-p);
+    const head=len=>{const q=rt.getPointAtLength(Math.max(0,len));['head','pulse'].forEach(c=>{const e=svg.querySelector('.'+c);e.setAttribute('cx',q.x);e.setAttribute('cy',q.y);});};
+    if(anim&&!reduce){const f0=isFinite(parseFloat(rt.style.strokeDashoffset))?parseFloat(rt.style.strokeDashoffset):L;const t0=performance.now();cancelAnimationFrame(svg._raf);
+      (function f(t){const k=Math.min(1,(t-t0)/900),e=1-Math.pow(1-k,3),o=f0+(target-f0)*e;rt.style.strokeDashoffset=o;head(L-o);if(k<1)svg._raf=requestAnimationFrame(f);})(t0);}
+    else{rt.style.strokeDashoffset=target;head(L-target);}}
+  const progOf=P=>P<=0?0.03:Math.min(1,0.12+Math.log10(1+P/1000)/2.1);
+
+  // ---------- 계산 ----------
+  function active(){return ORDER.filter(s=>(kmBy[s]||0)>0);}
+  function totals(){const sp=active();let km=0,miss=0,year=0,needChip=false;const parts=[];
+    sp.forEach(s=>{km+=kmBy[s];miss+=kmBy[s]*RATE[s];const pace=paceBy[s]!=null?paceBy[s]:(needChip=true,chipWeekly);year+=pace*52*RATE[s];parts.push({s,pace,cap:paceBy[s]!=null});});
+    const main=sp.slice().sort((a,b)=>kmBy[b]*RATE[b]-kmBy[a]*RATE[a])[0]||sport;return{sp,km,miss,year,parts,needChip,main};}
+  const label=t=>t.sp.length>1?'아웃도어 '+fmt(t.km)+'km':KO[t.main]+' '+fmt(t.km)+'km';
+  const sets=P=>Math.floor(P/GEL.price);
+
+  let shown=0;
+  const TEASE=Math.round((32000+Math.random()*58000)/10)*10;
+  function live(){const t=totals(),real=t.miss,has=real>0,to=has?real:TEASE,from=has?shown:to;shown=has?to:0;const n$=$('liveN');
+    n$.classList.toggle('on',has);n$.setAttribute('aria-hidden',String(!has));
+    $('kick1').textContent=has?'지금까지 '+fmt(t.km)+'km 기준':'스트라바 기록으로 확인';
+    $('hl1').innerHTML=has?'내 운동 기록에 숨은<br>리워드는 <em>이만큼이에요</em>':'내 운동 기록에 숨은<br>리워드, <em>얼마일까요?</em>';
+    if(reduce||!has)n$.textContent=fmt(to);
+    else{const t0=performance.now();cancelAnimationFrame(live.r);(function f(x){const k=Math.min(1,(x-t0)/450);n$.textContent=fmt(from+(to-from)*k);if(k<1)live.r=requestAnimationFrame(f);})(t0);}
+    const n=sets(real);$('cnt1').textContent=has?n:'?';$('prodT').innerHTML=has?'에너지젤 <em id="set1">'+n+'세트</em>를 살 수 있어요':'에너지젤 <em id="set1">몇 세트</em>일까요?';setProgress('track1',progOf(has?real:0),true);
+    const lv=$('dock').querySelector('.live');if(lv)lv.textContent=has?'· '+fmt(to)+'P':'';}
+
+  // ---------- 화면 ----------
+  const DOCK={
+    1:()=>'<button type="button" class="btn pri" id="calc">내 리워드 확인하기<span class="live"></span></button><p class="micro">캡처 1장 또는 km 입력 · 로그인 없음</p>',
+    2:()=>'<a class="btn pri" id="install" href="'+INSTALL_URL+'" target="_blank" rel="noopener">데얼스 앱에서 지금부터 쌓기</a><div class="duo"><button type="button" class="btn weak" id="share">친구랑 비교하기</button><button type="button" class="btn weak" id="card">결과 카드</button></div>'};
+  let io=null;
+  function go(n){[1,2].forEach(i=>$('s'+i).hidden=i!==n);document.body.classList.toggle('r2',n===2);$('dock').innerHTML=DOCK[n]();
+    ['calc','install','share','card'].forEach(id=>$(id)&&$(id).addEventListener('click',H[id]));window.scrollTo(0,0);track('step_view',{step:n});
+    document.body.classList.toggle('hideDock',n===1);if(n===1){drawTrack('track1',progOf(totals().miss),7);shown=0;live();}}
+  const H={
+    calc:()=>{saveKm();if(!active().length){$('status').className='status err';$('status').textContent='거리를 입력하거나 숫자 버튼을 눌러주세요.';$('km').focus();return;}showResult();},
+    install:()=>track('install_cta_clicked',{miss:totals().miss}),share:shareLink,card:openSheet};
+  function countUp(el,to){if(reduce){el.innerHTML=fmt(to)+'<span>P</span>';return;}const t0=performance.now();
+    (function f(t){const k=Math.min(1,(t-t0)/1200),e=1-Math.pow(1-k,3);el.innerHTML=fmt(to*e)+'<span>P</span>';if(k<1)requestAnimationFrame(f);})(t0);}
+  function pouches(n){const one='<svg viewBox="0 0 14 18"><path d="M3 1h8l-1 2H4z" fill="#FF5500"/><rect x="1.5" y="3" width="11" height="14" rx="3" fill="#FF5500"/></svg>';
+    return one.repeat(Math.min(n,20))+(n>20?'<span style="font:600 12px var(--font);color:#FF8A4D">+'+(n-20)+'</span>':'');}
+  function renderYear(){const t=totals();$('rYear').textContent=fmt(t.year)+'P';
+    $('yearSub').textContent=t.parts.map(p=>KO[p.s]+' 주 '+fmt1(p.pace)+'km'+(p.cap?'(올해 페이스)':'')).join(' · ')+' · 에너지젤 '+sets(t.year)+'세트';
+    $('wk').hidden=!t.needChip;document.querySelectorAll('#wk button').forEach(b=>b.setAttribute('aria-pressed',String(num(b.dataset.wk)===chipWeekly)));}
+  function showResult(){const t=totals();go(2);
+    $('rLabel').textContent=label(t)+'로 지금까지 놓친 리워드';
+    $('rMeta').innerHTML=t.sp.map(s=>'<span class="pill">'+KO[s]+' <b>'+fmt(kmBy[s])+'km</b></span>').join('');
+    const n=sets(t.miss);$('cnt2').textContent=n;$('set2').textContent=n+'세트';$('pouches').innerHTML=pouches(n);
+    $('gelSub').textContent='아미노바이탈 퍼펙트 에너지젤 45g 4개 · 11,000원'+(n===0?' · '+fmt(GEL.price-t.miss)+'P 더 모으면 1세트':'');
+    $('breakdown').innerHTML=t.sp.map(s=>'<div class="row"><div class="l"><b>'+KO[s]+'</b><small>'+fmt(kmBy[s])+'km × '+RATE[s]+'P</small></div><div class="v sm">'+fmt(kmBy[s]*RATE[s])+'P</div></div>').join('');
+    $('breakdown').hidden=t.sp.length<2;
+    if(friend){const d=t.miss-friend.p;$('vsRow').hidden=false;$('vsSub').textContent='친구 '+fmt(friend.p)+'P';$('vsV').textContent=(d>=0?'+':'−')+fmt(Math.abs(d))+'P';$('vsV').className='v '+(d>=0?'up':'hot');}
+    renderYear();drawTrack('track2',0.03,11);requestAnimationFrame(()=>setProgress('track2',progOf(t.miss),true));countUp($('rMiss'),t.miss);
+    track('calc_completed',{sports:t.sp,km:t.km,miss:t.miss,friend:!!friend});}
+
+  // ---------- 친구 비교 + 쿠폰 ----------
+  async function shareLink(){const t=totals();const base=location.origin&&location.origin!=='null'?location.origin+location.pathname:'https://www.theres.co';
+    const url=base+'?p='+Math.round(t.miss)+'&k='+Math.round(t.km)+'&s='+t.main+'&c='+encodeURIComponent(CREW);
+    const text='나는 '+label(t)+'로 지금까지 '+fmt(t.miss)+'P(에너지젤 '+sets(t.miss)+'세트)를 놓쳤대. 너는 얼마야? — 숨은 리워드 찾기 · 데얼스 아웃도어 리워드 커머스';
+    track('share_clicked',{miss:t.miss});
+    try{if(navigator.share){await navigator.share({title:'숨은 리워드 찾기',text,url});track('share_done');showCoupon();return;}}catch(e){if(e&&e.name==='AbortError')return;}
+    try{await navigator.clipboard.writeText(text+' '+url);toast('링크를 복사했어요. 카톡에 붙여넣어 보내주세요.');track('share_copied');showCoupon();}
+    catch(e){toast('아래 문구를 길게 눌러 복사해 주세요.');const b=document.createElement('textarea');b.className='copybox';b.readOnly=true;b.value=text+' '+url;$('s2').appendChild(b);b.select();}}
+  function showCoupon(){const c=$('coupon');if(!c.hidden)return;$('cpCode').textContent=COUPON.code;$('cpDesc').textContent=COUPON.desc;$('cpGo').href=COUPON.url;c.hidden=false;c.scrollIntoView({behavior:'smooth',block:'center'});track('coupon_revealed');}
+  $('cpCopy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(COUPON.code);toast('쿠폰 코드를 복사했어요.');}catch(e){toast('코드를 길게 눌러 복사해 주세요.');}track('coupon_copied');});
+  $('cpGo').addEventListener('click',()=>track('coupon_shop_clicked'));
+  ['prod1','prod2'].forEach(id=>$(id).addEventListener('click',()=>track('product_clicked',{from:id})));
+
+  // ---------- 카드 (1080×1920, 세이프존 위 270·아래 384·좌우 72) ----------
+  const W=1080,H2=1920,X=72,TOP=270,BOT=H2-384;
+  const F='"Helvetica Neue",Helvetica,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  const C={sun:'#FF5500',white:'#FFFFFF',g3:'#767676'};
+  function wm(g,x,y,col){g.fillStyle=col;g.font='700 44px '+F;g.fillText('theres',x,y);const w=g.measureText('theres').width;g.fillStyle=C.sun;g.beginPath();g.arc(x+w+16,y-30,9,0,7);g.fill();
+    g.fillStyle=col==='#000'?'rgba(0,0,0,.6)':'rgba(255,255,255,.6)';g.font='500 28px '+F;g.fillText('아웃도어 리워드 커머스',x,y+46);}
+  function fit(g,t,wt,max,width){let s=max;g.font=wt+' '+s+'px '+F;while(g.measureText(t).width>width&&s>40){s-=6;g.font=wt+' '+s+'px '+F;}return s;}
+  function stack(g,x,y,lab,v,vc,lc,size){g.fillStyle=lc;g.font='500 34px '+F;g.fillText(lab,x,y);g.fillStyle=vc;g.font='700 '+size+'px '+F;g.fillText(v,x-4,y+16+size*.9);return y+16+size*.9;}
+  function route(g,y,h,col,seed,glow){const pts=routePts(W,h,seed,22);g.save();g.translate(0,y);g.strokeStyle=col;g.lineWidth=8;g.lineCap='round';g.lineJoin='round';
+    if(glow){g.shadowColor='rgba(255,85,0,.6)';g.shadowBlur=24;}g.beginPath();pts.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.stroke();g.shadowBlur=0;
+    const e=pts[pts.length-1];g.fillStyle=col;g.beginPath();g.arc(e[0],e[1],14,0,7);g.fill();g.fillStyle=col===C.sun?'#000':C.sun;g.beginPath();g.arc(pts[0][0],pts[0][1],12,0,7);g.fill();g.lineWidth=6;g.stroke();g.restore();}
+  function sh(g,on){g.shadowColor=on?'rgba(0,0,0,.45)':'transparent';g.shadowBlur=on?20:0;}
+  const gelLine=t=>'= 에너지젤 '+sets(t.miss)+'세트';
+  const TPL=[
+    {name:'나이트',draw(g,t){g.fillStyle='#000';g.fillRect(0,0,W,H2);route(g,TOP+110,440,C.sun,11,true);wm(g,X,TOP+44,C.white);
+      let y=stack(g,X,TOP+640,label(t)+'로 놓친 리워드',fmt(t.miss)+'P',C.white,C.g3,fit(g,fmt(t.miss)+'P','700',200,W-2*X));
+      g.fillStyle=C.sun;g.font='700 44px '+F;g.fillText(gelLine(t),X,y+80);
+      stack(g,X,y+180,'지금부터 데얼스에서 1년이면',fmt(t.year)+'P',C.white,C.g3,96);
+      g.fillStyle=C.g3;g.font='400 30px '+F;g.fillText('러닝·등산·펫워킹 1km=40P · 사이클링 1km=10P',X,BOT-50);g.fillStyle=C.white;g.font='700 34px '+F;g.fillText('숨은 리워드 찾기 →',X,BOT);}},
+    {name:'선라이즈',draw(g,t){g.fillStyle=C.sun;g.fillRect(0,0,W,H2);route(g,TOP+680,520,'#000',5,false);wm(g,X,TOP+44,'#000');
+      g.fillStyle='#000';g.font='500 44px '+F;g.fillText('지금까지 놓친 리워드',X,TOP+260);
+      const s=fit(g,fmt(t.miss)+'P','700',240,W-2*X);g.fillText(fmt(t.miss)+'P',X-6,TOP+260+s*.95);
+      g.font='700 44px '+F;g.fillText(gelLine(t),X,TOP+260+s*.95+84);g.font='700 36px '+F;g.fillText('숨은 리워드 찾기 →',X,BOT);}},
+    {name:'비교',draw(g,t){g.fillStyle='#111';g.fillRect(0,0,W,H2);route(g,TOP+90,360,C.sun,23,true);wm(g,X,TOP+44,C.white);
+      g.fillStyle=C.white;g.font='700 64px '+F;g.fillText('너는 얼마야?',X,TOP+560);
+      stack(g,X,TOP+700,'나 · '+label(t),fmt(t.miss)+'P',C.sun,C.g3,fit(g,fmt(t.miss)+'P','700',180,W-2*X));
+      g.fillStyle='#2A2A2A';g.fillRect(X,TOP+960,W-2*X,4);stack(g,X,TOP+1050,'너 · ?km','?P',C.white,C.g3,180);
+      g.fillStyle=C.g3;g.font='400 30px '+F;g.fillText('러닝·등산·펫워킹 1km=40P · 사이클링 1km=10P',X,BOT);}},
+    {name:'스티커',check:true,draw(g,t){g.clearRect(0,0,W,H2);route(g,H2/2-560,380,C.sun,11,true);sh(g,true);const y0=H2/2-60;
+      g.fillStyle=C.white;g.font='700 40px '+F;g.fillText('theres · 숨은 리워드',X,y0);
+      const s=fit(g,fmt(t.miss)+'P','700',220,W-2*X);g.fillText(fmt(t.miss)+'P',X-4,y0+20+s*.9);
+      g.fillStyle=C.sun;g.font='700 44px '+F;g.fillText(gelLine(t),X,y0+s+110);sh(g,false);}}
+  ];
+  const picker=$('picker'),thumbs=[];
+  TPL.forEach((tp,i)=>{const b=document.createElement('button');b.type='button';b.className='pick';b.setAttribute('aria-pressed',String(i===0));
+    b.innerHTML='<span class="thumb'+(tp.check?' check':'')+'"><img alt=""></span>'+tp.name;b.addEventListener('click',()=>{sel=i;picker.querySelectorAll('.pick').forEach((x,j)=>x.setAttribute('aria-pressed',String(j===i)));drawPreview();track('template_selected',{t:tp.name});});
+    picker.appendChild(b);thumbs.push(b.querySelector('img'));});
+  const fontsReady=Promise.all([document.fonts.load('700 40px "Noto Sans KR"'),document.fonts.load('500 40px "Noto Sans KR"')]).catch(()=>{});
+  function draw(i,k){const c=document.createElement('canvas');c.width=W*k;c.height=H2*k;const g=c.getContext('2d');g.scale(k,k);TPL[i].draw(g,totals());return c.toDataURL('image/png');}
+  async function drawPreview(){await fontsReady;$('pvImg').src=draw(sel,1);$('pvImg').className=TPL[sel].check?'check':'';}
+  async function openSheet(){await fontsReady;TPL.forEach((_,i)=>thumbs[i].src=draw(i,.18));await drawPreview();$('sheet').hidden=false;track('card_opened');}
+  $('closeSheet').addEventListener('click',()=>{$('sheet').hidden=true;});
+
+  // ---------- 입력 ----------
+  function saveKm(){const v=num($('km').value);if(v>0)kmBy[sport]=v;else delete kmBy[sport];$('clr').hidden=!(v>0);badges();}
+  function badges(){document.querySelectorAll('.sports button').forEach(b=>{const s=b.dataset.sport,sm=b.querySelector('small');
+    if(kmBy[s]){sm.textContent=fmt(kmBy[s])+'km';sm.classList.add('has');}else{sm.textContent=RATE[s]+'P';sm.classList.remove('has');}});}
+  function setSport(s){saveKm();sport=s;document.querySelectorAll('.sports button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.sport===s)));
+    $('km').placeholder='지금까지 '+VERB[s]+' 거리';$('km').value=kmBy[s]||'';$('clr').hidden=!(kmBy[s]>0);document.querySelectorAll('#presets button').forEach(x=>x.setAttribute('aria-pressed','false'));track('sport_selected',{sport:s});}
+  document.querySelectorAll('.sports button').forEach(b=>b.addEventListener('click',()=>setSport(b.dataset.sport)));
+  document.querySelectorAll('#presets button').forEach(b=>b.addEventListener('click',()=>{const nv=Math.round((num($('km').value)||0)+num(b.dataset.km));$('km').value=nv;delete paceBy[sport];saveKm();live();b.classList.remove('hit');void b.offsetWidth;b.classList.add('hit');$('status').className='status';$('status').textContent='누를 때마다 더해져요. 숫자는 직접 고칠 수도 있어요.';track('preset_used',{km:b.dataset.km,total:nv});}));
+  $('km').addEventListener('input',()=>{$('status').className='status';delete paceBy[sport];saveKm();live();document.querySelectorAll('#presets button').forEach(x=>x.setAttribute('aria-pressed','false'));});
+  $('km').addEventListener('keydown',e=>{if(e.key==='Enter'){$('km').blur();H.calc();}});
+  document.querySelectorAll('#wk button').forEach(b=>b.addEventListener('click',()=>{chipWeekly=num(b.dataset.wk);renderYear();track('weekly_changed',{chipWeekly});}));
+  $('home').addEventListener('click',()=>go(1));
+  let rz=null;window.addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{const P=totals().miss;if(!$('s1').hidden)drawTrack('track1',progOf(P),7);else drawTrack('track2',progOf(P),11);},150);});
+
+  // ---------- 캡처 인식 ----------
+  function parseKm(raw){const m=raw.match(/^(\d{1,3}(?:[.,]\d{3})+|\d+(?:[.,]\d{1,2})?)$/);if(!m)return null;let s=m[1];if(/^\d{1,3}([.,]\d{3})+$/.test(s))s=s.replace(/[.,]/g,'');else s=s.replace(',','.');return parseFloat(s);}
+  function extract(lines,height){const out={all:null,ytd:null,week:null,sport:null},kms=[];let allIdx=-1,ytdIdx=-1;
+    lines.forEach((ln,i)=>{const t=ln.text.trim();if(ln.y<height*.07)return;
+      if(/year[\s-]*to[\s-]*date|올해/i.test(t)&&!/km/i.test(t))ytdIdx=i;
+      if(/all\s*time|전체\s*기간|전체/i.test(t)&&!/km/i.test(t))allIdx=i;
+      if(!out.sport){if(/\brides?\b|라이드/i.test(t))out.sport='ride';else if(/\bruns?\b|달리기|러닝/i.test(t))out.sport='run';}
+      const re=/(\d{1,3}(?:[.,]\d{3})+|\d+(?:[.,]\d{1,2})?)\s*km\b/ig;let m;while((m=re.exec(t))){const v=parseKm(m[1]);if(v!=null)kms.push({v,i,t});}});
+    const after=kms.filter(k=>allIdx>=0&&k.i>allIdx);out.all=after.length?after[0].v:(kms.length?Math.max.apply(null,kms.map(k=>k.v)):null);
+    const y=kms.filter(k=>ytdIdx>=0&&k.i>ytdIdx&&(allIdx<0||k.i<allIdx));out.ytd=y.length?y[0].v:null;
+    const wk=kms.find(k=>/week|주/i.test(k.t));out.week=wk?wk.v:null;return out;}
+  // 공개 배포본(GitHub Pages)은 tesseract.js를 jsDelivr에서, 미리보기(claude.ai)는 함께 올린 lib/에서 불러옴
+  const LOCAL_LIB=/claude|localhost|127\.0\.0\.1/.test(location.hostname);
+  function loadTess(){return new Promise((res,rej)=>{if(window.Tesseract)return res();const s=document.createElement('script');
+    s.src=LOCAL_LIB?'lib/tesseract.min.js':'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';s.onload=res;s.onerror=rej;document.head.appendChild(s);});}
+  async function getWorker(){if(worker)return worker;await loadTess();const base=new URL('.',location.href).href;
+    worker=LOCAL_LIB?await Tesseract.createWorker('eng',1,{workerPath:base+'lib/ocr-worker.js',corePath:base+'lib/core/',langPath:base+'lib/lang',gzip:true,workerBlobURL:false})
+      :await Tesseract.createWorker('eng');return worker;}
+  async function readImages(srcs){const st=$('status');st.className='status';let ok=0;
+    for(let i=0;i<srcs.length;i++){st.textContent='캡처를 읽는 중이에요 ('+(i+1)+'/'+srcs.length+'). 처음 한 번은 10초쯤 걸려요.';
+      try{const img=await new Promise((res,rej)=>{const im=new Image();im.onload=()=>res(im);im.onerror=rej;im.src=srcs[i];});
+        const r=await (await getWorker()).recognize(img);
+        const got=extract((r.data.lines||[]).map(l=>({text:l.text,y:l.bbox?l.bbox.y0:0})),img.naturalHeight||2000);
+        if(got.all==null)continue;const s=got.sport||sport;kmBy[s]=got.all;
+        if(got.ytd)paceBy[s]=got.ytd/weeksThisYear();else if(got.week)paceBy[s]=got.week;
+        ok++;track('ocr_success',{sport:s,all:got.all,ytd:got.ytd});
+      }catch(e){track('ocr_failed',{reason:String(e&&e.message||e)});}}
+    if(!ok){st.className='status err';st.textContent='km 숫자를 찾지 못했어요. 전체 기간 거리가 보이게 다시 찍거나 직접 입력해 주세요.';return;}
+    st.textContent='';badges();$('km').value=kmBy[sport]||'';showResult();}
+  $('file').addEventListener('change',e=>{const fs=Array.from(e.target.files||[]);if(!fs.length)return;track('capture_uploaded',{n:fs.length});readImages(fs.map(f=>URL.createObjectURL(f)));e.target.value='';});
+
+  $('toInput').addEventListener('click',()=>{track('hero_cta_clicked');$('sec1').scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});});
+  if('IntersectionObserver' in window){io=new IntersectionObserver(es=>{es.forEach(e=>{if(!$('s1').hidden)document.body.classList.toggle('hideDock',e.isIntersecting);});});io.observe($('heroCta'));}
+  $('clr').addEventListener('click',e=>{e.preventDefault();$('km').value='';delete paceBy[sport];saveKm();live();$('km').focus();track('km_cleared',{sport});});
+  go(1);track('landing_viewed',{friend:!!friend});
+})();
+</script>
+
+</body></html>
