@@ -288,7 +288,7 @@ button:focus-visible,a:focus-visible,.cap:focus-within{outline:2px solid var(--s
 
 <script>
 /* Amplitude (Theres Inc. 404638) — 키만 넣으면 동작. 로드 전 이벤트는 큐에 쌓았다가 보냄 */
-window.AMP_KEY='';
+window.AMP_KEY='6913976aadc43df1d2b9c8f2d8a7c891';
 (function(){window._o33q=[];if(!window.AMP_KEY)return;var s=document.createElement('script');s.src='https://cdn.amplitude.com/script/'+window.AMP_KEY+'.js';s.async=true;
   s.onload=function(){try{window.amplitude.init(window.AMP_KEY,{fetchRemoteConfig:true,autocapture:{attribution:true,pageViews:true,sessions:true,formInteractions:false,fileDownloads:false,elementInteractions:false}});
     (window._o33q||[]).forEach(function(e){window.amplitude.track(e[0],e[1]);});window._o33q=null;}catch(e){}};document.head.appendChild(s);})();
@@ -299,7 +299,7 @@ window.AMP_KEY='';
   const KO={run:'러닝',hike:'등산',pet:'펫워킹',ride:'사이클링'};
   const VERB={run:'달린',hike:'걸은',pet:'산책한',ride:'달린'};
   const ORDER=['run','ride','hike','pet'];
-  const INSTALL_URL='https://www.theres.co'; // Airbridge 트래킹 링크로 교체
+  const INSTALL_URL='https://go.theres.co/hidden-reward'; // Airbridge 트래킹 링크로 교체
   const CREW=(function(){try{return(new URLSearchParams(location.search).get('c')||'direct').replace(/[^a-zA-Z0-9_-]/g,'').slice(0,30)||'direct';}catch(e){return'direct';}})();
   const COUPON={on:false,code:'COUPON',desc:'데얼스아웃도어에서 쓸 수 있는 할인 쿠폰이에요. 주문서에서 쿠폰 코드를 입력해 주세요.',url:'https://www.theresoutdoor.co'}; // 카페24 쿠폰 확정되면 교체
   const GEL={price:11000}; // 아미노바이탈 아미노샷 퍼펙트 에너지젤 45g 4개, 1P = 1원
